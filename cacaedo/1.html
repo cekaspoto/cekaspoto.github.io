@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ahmad Solih | IT ENTHUSIAS & INSPIRATION SEEKER</title>
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:300italic,400italic,700italic,400,700,300' rel='stylesheet' type='text/css'>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/icons.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/awan.css" rel="stylesheet">
+    <link href="css/media.css" rel="stylesheet">
+
+</head>
+<body>
+<div id="preloader"><div id="status">&nbsp;</div></div>
+
+<div id="mainWrapper">
+
+    <div id="logo">
+        <img class="svg" src="img/ahmad.png" alt="Ahmad Solih">
+    </div>
+
+    <section id="mainIndex">
+        <div class="center_vertical">
+            <h1 class="nama">AHMAD SOLIH</h1>
+            <h2 class="skills">IT ENTHUSIAS & INSPIRATION SEEKER</h2>
+
+            <div id="socialIcons">
+                <a href="https://www.facebook.com/ahmad.solih2"><span class="icon-facebook3"></span></a>
+                <a href="https://twitter.com/achmadsolih"><span class="icon-twitter3"></span></a>
+                <a href="#"><span class="icon-linkedin"></span></a>
+                <a href="#"><span class="icon-pinterest"></span></a>
+            </div>
+
+        </div>
+        <div class="btn_container">
+            <div id="index_btn"><a class="btn btn-primary btn-lg toggleinfo" role="button">About Me</a></div>
+        </div>
+
+    </section>
+
+    <section id="mainContents">
+        <div class="container">
+            <h1>About Me</h1>
+            <p>I am 22 years old and I am a web & graphic designer based in Bandung with over 5 years of freelance and companies experience. Computers have been in my life since I was on Junior Highschool and I always loved anything related with pixels so I started to design at a young age, most of my skills and knowledge are self taught.
+            </p>
+        </div>
+    </section>
+
+    <!-- START BACKGROUNDS -->
+    <div id="backgrounds">
+        <ul id="main_slideshow">
+            <li>
+                <img src="img/sky1.jpg" alt="">
+            </li>
+            <!--
+            <li>
+                <img src="img/image02.jpg" alt="">
+            </li>
+            <li>
+                <img src="img/image03.jpg" alt="">
+            </li>
+            <li>
+                <img src="img/image04.jpg" alt="">
+            </li>
+            <li>
+                <img src="img/image05.jpg" alt="">
+            </li>
+        -->
+        </ul>
+    </div>
+    <!-- END BACKGROUNDS -->
+</div>
+<!-- END MAIN WRAPPER -->
+
+
+<script src="js/jquery-1.11.0.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.plugin.min.js"></script>
+<script src="js/three.min.js"></script>
+<script src="js/Detector.js"></script>
+
+<script id="vs" type="x-shader/x-vertex">
+
+	varying vec2 vUv;
+
+	void main() {
+
+		vUv = uv;
+		gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+
+	}
+
+</script>
+
+<script id="fs" type="x-shader/x-fragment">
+
+	uniform sampler2D map;
+
+	uniform vec3 fogColor;
+	uniform float fogNear;
+	uniform float fogFar;
+
+	varying vec2 vUv;
+
+	void main() {
+
+		float depth = gl_FragCoord.z / gl_FragCoord.w;
+		float fogFactor = smoothstep( fogNear, fogFar, depth );
+
+		gl_FragColor = texture2D( map, vUv );
+		gl_FragColor.w *= pow( gl_FragCoord.z, 20.0 );
+		gl_FragColor = mix( gl_FragColor, vec4( fogColor, gl_FragColor.w ), fogFactor );
+
+	}
+
+</script>
+
+<script type="text/javascript">
+    var cloudImg = 'img/cloud2.png';
+
+    if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+
+    var container;
+    var camera, scene, renderer;
+    var mesh, geometry, material;
+
+    var mouseX = 0, mouseY = 0;
+    var start_time = Date.now();
+
+    var windowHalfX = window.innerWidth / 2;
+    var windowHalfY = window.innerHeight / 2;
+
+    init();
+
+    function init() {
+
+        container = document.createElement( 'div' );
+        document.body.appendChild( container );
+
+        // Bg gradient
+
+        var canvas = document.createElement( 'canvas' );
+        canvas.width = 32;
+        canvas.height = window.innerHeight;
+
+        var context = canvas.getContext( '2d' );
+
+        var gradient = context.createLinearGradient( 0, 0, 0, canvas.height );
+        gradient.addColorStop(0, "#7d7f81");
+        gradient.addColorStop(0.5, "#7d7f81");
+
+        context.fillStyle = gradient;
+        context.fillRect(0, 0, canvas.width, canvas.height);
+
+        /*
+        container.style.background = 'url(' + canvas.toDataURL('image/png') + ')';
+        container.style.backgroundSize = '32px 100%';
+        */
+
+        //
+
+        camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 3000 );
+        camera.position.z = 6000;
+
+        scene = new THREE.Scene();
+
+        geometry = new THREE.Geometry();
+
+        var texture = THREE.ImageUtils.loadTexture( cloudImg, null, animate );
+        texture.magFilter = THREE.LinearMipMapLinearFilter;
+        texture.minFilter = THREE.LinearMipMapLinearFilter;
+
+        var fog = new THREE.Fog( 0xd9cfc6, - 100, 3000 );
+
+        material = new THREE.ShaderMaterial( {
+
+            uniforms: {
+
+                "map": { type: "t", value: texture },
+                "fogColor" : { type: "c", value: fog.color },
+                "fogNear" : { type: "f", value: fog.near },
+                "fogFar" : { type: "f", value: fog.far },
+
+            },
+            vertexShader: document.getElementById( 'vs' ).textContent,
+            fragmentShader: document.getElementById( 'fs' ).textContent,
+            depthWrite: false,
+            depthTest: false,
+            transparent: true
+
+        } );
+
+        var plane = new THREE.Mesh( new THREE.PlaneGeometry( 64, 64 ) );
+
+        for ( var i = 0; i < 8000; i++ ) {
+
+            plane.position.x = Math.random() * 1000 - 500;
+            plane.position.y = - Math.random() * Math.random() * 200 - 10;
+            plane.position.z = i;
+            plane.rotation.z = Math.random() * Math.PI;
+            plane.scale.x = plane.scale.y = Math.random() * Math.random() * 1.5 + 0.5;
+
+            THREE.GeometryUtils.merge( geometry, plane );
+
+        }
+
+        mesh = new THREE.Mesh( geometry, material );
+        scene.add( mesh );
+
+        mesh = new THREE.Mesh( geometry, material );
+        mesh.position.z = - 8000;
+        scene.add( mesh );
+
+        renderer = new THREE.WebGLRenderer( { antialias: true } );
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        container.appendChild( renderer.domElement );
+
+        document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+        window.addEventListener( 'resize', onWindowResize, false );
+
+    }
+
+    function onDocumentMouseMove( event ) {
+
+        mouseX = ( event.clientX - windowHalfX ) * 0.075;
+        mouseY = ( event.clientY - windowHalfY ) * 0.05;
+
+    }
+
+    function onWindowResize( event ) {
+
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize( window.innerWidth, window.innerHeight );
+
+    }
+
+    function animate() {
+
+        requestAnimationFrame( animate );
+
+        position = ( ( Date.now() - start_time ) * 0.03 ) % 8000;
+
+        camera.position.x += ( mouseX - camera.position.x ) * 0.01;
+        camera.position.y += ( - mouseY - camera.position.y ) * 0.01;
+        camera.position.z = - position + 8000;
+
+        renderer.render( scene, camera );
+
+    }
+
+</script>
+<script>
+    var script = document.createElement('script');
+    script.setAttribute('src', 'js/config.js');
+    document.getElementsByTagName('head')[0].appendChild(script);
+</script>
+
+<script type="text/javascript">
+    $(window).load(function() {
+        $('#status').fadeOut(1000);
+        $('#preloader').delay(1000).fadeOut(1000);
+    })
+</script>
+
+</body>
+</html>
