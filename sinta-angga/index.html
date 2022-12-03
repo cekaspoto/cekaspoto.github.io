@@ -143,7 +143,7 @@
 	<div id="floating-button" class="float">
 		<div class="control-center open">
 			<div class="audio-play">
-				<div data-video="Ji-SfAEGVsg" data-autoplay="1" data-loop="1" id="youtube-audio1"></div>
+				<div data-video="Ji-SfAEGVsg" data-autoplay="1" data-loop="1" id="youtube-audio1" aut></div>
 			</div>
 			<ul class="right-sidebar">
 				<!--gallery-->
@@ -578,7 +578,9 @@
 					<br><br><br>
 
 					<h2 style="color: #3f4e35">Turut Mengundang</h2>
-					<h4 style="font-family: 'Merriweather', Arial, serif; color: #5d5d5d; line-height: 1.7em" >Kel. Besar Bapak Dasuki (Alm)<br>
+					<h4 style="font-family: 'Merriweather', Arial, serif; color: #5d5d5d; line-height: 1.7em" >
+						Kel. Besar Bapak Sudjana (Alm)<br>
+						Kel. Besar Bapak Dasuki (Alm)<br>
 						Bapak Atam Buhari<br>
 						Bapak Nano Hartono<br>
 						Kel. Besar Ibu Rosita (Alm)<br>
@@ -887,16 +889,16 @@
 	// 	enableUtc: false
 	// });
 
-	$('#open-invitation').click(function (){
-		$('#overlay').addClass('hide-overlay');
-		playAudio1();
-		/*yang bagian floating button ada animasinya tapi karena ketutup dulu sama overlay jadinya gak nampak*/
-		/*pengen pas di klik buka undangan baru jalan animasinya*/
-		/*var c = document.getElementsByClassName('right-sidebar');
-		for (var i = 0; i < c.length; i++) {
-			c[i].classList.add('animate');
-		}*/
-	});
+	// $('#open-invitation').click(function (){
+	// 	$('#overlay').addClass('hide-overlay');
+	// 	playAudio1();
+	// 	/*yang bagian floating button ada animasinya tapi karena ketutup dulu sama overlay jadinya gak nampak*/
+	// 	/*pengen pas di klik buka undangan baru jalan animasinya*/
+	// 	/*var c = document.getElementsByClassName('right-sidebar');
+	// 	for (var i = 0; i < c.length; i++) {
+	// 		c[i].classList.add('animate');
+	// 	}*/
+	// });
 
 	$.get( "https://api.github.com/repos/ngodingsolusi/the-wedding-of-rehan-maulidan/issues?state=all&per_page", function( data ) {
 		for (let i = 0; i < data.length; i++){
